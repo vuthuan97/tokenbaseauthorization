@@ -1,0 +1,213 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="DbBlogCaNhanModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="DanhMucBaiViet">
+          <Key>
+            <PropertyRef Name="DMBVID" />
+          </Key>
+          <Property Name="DMBVID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TenDMBV" Type="nvarchar" MaxLength="200" />
+          <Property Name="TAGDMBV" Type="nvarchar" MaxLength="300" />
+        </EntityType>
+        <EntityType Name="DanhmucBlog">
+          <Key>
+            <PropertyRef Name="DMBlogID" />
+          </Key>
+          <Property Name="DMBlogID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="tenDMBlog" Type="nvarchar" MaxLength="200" />
+          <Property Name="TagDMBlog" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="ThanhVien">
+          <Key>
+            <PropertyRef Name="thanhvienID" />
+          </Key>
+          <Property Name="thanhvienID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="loaiThanhVien" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="UserWeb">
+          <Key>
+            <PropertyRef Name="userID" />
+          </Key>
+          <Property Name="userID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="userName" Type="nvarchar" MaxLength="100" />
+          <Property Name="password" Type="nvarchar" MaxLength="100" />
+          <Property Name="nickName" Type="nvarchar" MaxLength="100" />
+          <Property Name="hoTen" Type="nvarchar" MaxLength="200" />
+          <Property Name="ngaySinh" Type="datetime" />
+          <Property Name="diaChi" Type="nvarchar" MaxLength="300" />
+          <Property Name="thanhVienID" Type="int" Nullable="false" />
+          <Property Name="imageName" Type="nvarchar" MaxLength="200" />
+          <Property Name="imagePath" Type="nvarchar" MaxLength="200" />
+          <Property Name="ngayDangKy" Type="datetime" />
+        </EntityType>
+        <Association Name="FK_dbo_User_dbo_ThanhVien_thanhVienID">
+          <End Role="ThanhVien" Type="Self.ThanhVien" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UserWeb" Type="Self.UserWeb" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ThanhVien">
+              <PropertyRef Name="thanhvienID" />
+            </Principal>
+            <Dependent Role="UserWeb">
+              <PropertyRef Name="thanhVienID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DbBlogCaNhanModelStoreContainer">
+          <EntitySet Name="DanhMucBaiViet" EntityType="Self.DanhMucBaiViet" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DanhmucBlog" EntityType="Self.DanhmucBlog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ThanhVien" EntityType="Self.ThanhVien" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserWeb" EntityType="Self.UserWeb" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_dbo_User_dbo_ThanhVien_thanhVienID" Association="Self.FK_dbo_User_dbo_ThanhVien_thanhVienID">
+            <End Role="ThanhVien" EntitySet="ThanhVien" />
+            <End Role="UserWeb" EntitySet="UserWeb" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DbBlogCaNhanModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="DanhMucBaiViet">
+          <Key>
+            <PropertyRef Name="DMBVID" />
+          </Key>
+          <Property Name="DMBVID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TenDMBV" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="TAGDMBV" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="DanhmucBlog">
+          <Key>
+            <PropertyRef Name="DMBlogID" />
+          </Key>
+          <Property Name="DMBlogID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="tenDMBlog" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="TagDMBlog" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ThanhVien">
+          <Key>
+            <PropertyRef Name="thanhvienID" />
+          </Key>
+          <Property Name="thanhvienID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="loaiThanhVien" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="UserWeb" Relationship="Self.FK_dbo_User_dbo_ThanhVien_thanhVienID" FromRole="ThanhVien" ToRole="UserWeb" />
+        </EntityType>
+        <EntityType Name="UserWeb">
+          <Key>
+            <PropertyRef Name="userID" />
+          </Key>
+          <Property Name="userID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="userName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="password" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="nickName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="hoTen" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ngaySinh" Type="DateTime" Precision="3" />
+          <Property Name="diaChi" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="thanhVienID" Type="Int32" Nullable="false" />
+          <Property Name="imageName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="imagePath" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ngayDangKy" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="ThanhVien" Relationship="Self.FK_dbo_User_dbo_ThanhVien_thanhVienID" FromRole="UserWeb" ToRole="ThanhVien" />
+        </EntityType>
+        <Association Name="FK_dbo_User_dbo_ThanhVien_thanhVienID">
+          <End Role="ThanhVien" Type="Self.ThanhVien" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UserWeb" Type="Self.UserWeb" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ThanhVien">
+              <PropertyRef Name="thanhvienID" />
+            </Principal>
+            <Dependent Role="UserWeb">
+              <PropertyRef Name="thanhVienID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="apiEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="DanhMucBaiViet" EntityType="Self.DanhMucBaiViet" />
+          <EntitySet Name="DanhmucBlog" EntityType="Self.DanhmucBlog" />
+          <EntitySet Name="ThanhVien" EntityType="Self.ThanhVien" />
+          <EntitySet Name="UserWeb" EntityType="Self.UserWeb" />
+          <AssociationSet Name="FK_dbo_User_dbo_ThanhVien_thanhVienID" Association="Self.FK_dbo_User_dbo_ThanhVien_thanhVienID">
+            <End Role="ThanhVien" EntitySet="ThanhVien" />
+            <End Role="UserWeb" EntitySet="UserWeb" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DbBlogCaNhanModelStoreContainer" CdmEntityContainer="apiEntities">
+          <EntitySetMapping Name="DanhMucBaiViet">
+            <EntityTypeMapping TypeName="DbBlogCaNhanModel.DanhMucBaiViet">
+              <MappingFragment StoreEntitySet="DanhMucBaiViet">
+                <ScalarProperty Name="DMBVID" ColumnName="DMBVID" />
+                <ScalarProperty Name="TenDMBV" ColumnName="TenDMBV" />
+                <ScalarProperty Name="TAGDMBV" ColumnName="TAGDMBV" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DanhmucBlog">
+            <EntityTypeMapping TypeName="DbBlogCaNhanModel.DanhmucBlog">
+              <MappingFragment StoreEntitySet="DanhmucBlog">
+                <ScalarProperty Name="DMBlogID" ColumnName="DMBlogID" />
+                <ScalarProperty Name="tenDMBlog" ColumnName="tenDMBlog" />
+                <ScalarProperty Name="TagDMBlog" ColumnName="TagDMBlog" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ThanhVien">
+            <EntityTypeMapping TypeName="DbBlogCaNhanModel.ThanhVien">
+              <MappingFragment StoreEntitySet="ThanhVien">
+                <ScalarProperty Name="thanhvienID" ColumnName="thanhvienID" />
+                <ScalarProperty Name="loaiThanhVien" ColumnName="loaiThanhVien" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserWeb">
+            <EntityTypeMapping TypeName="DbBlogCaNhanModel.UserWeb">
+              <MappingFragment StoreEntitySet="UserWeb">
+                <ScalarProperty Name="userID" ColumnName="userID" />
+                <ScalarProperty Name="userName" ColumnName="userName" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="nickName" ColumnName="nickName" />
+                <ScalarProperty Name="hoTen" ColumnName="hoTen" />
+                <ScalarProperty Name="ngaySinh" ColumnName="ngaySinh" />
+                <ScalarProperty Name="diaChi" ColumnName="diaChi" />
+                <ScalarProperty Name="thanhVienID" ColumnName="thanhVienID" />
+                <ScalarProperty Name="imageName" ColumnName="imageName" />
+                <ScalarProperty Name="imagePath" ColumnName="imagePath" />
+                <ScalarProperty Name="ngayDangKy" ColumnName="ngayDangKy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

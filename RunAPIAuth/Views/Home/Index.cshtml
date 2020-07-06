@@ -1,0 +1,101 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<div class="row mt-5">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="user">Username:</label>
+            <input type="text" class="form-control" id="user" name="user" />
+        </div>
+        <div class="form-group">
+            <label for="pass">Pass:</label>
+            <input type="text" class="form-control" id="pass" name="pass" />
+        </div>
+        <div class="form-group">
+            <input type="button" onclick="loginfn()" class="btn btn-success" value="Login" />
+        </div>
+        <div class="form-group">
+            <div class="text-danger" id="errlogin"></div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <table class="table table-bordered  hidden tbl">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Tên Danh Mục</th>
+                    <th>Tag Danh Mục</th>
+                </tr>
+            </thead>
+            <tbody id="tblbody">
+            </tbody>
+        </table>
+        <div id="errshow" class="text-danger"></div>
+    </div>
+
+</div>
+<script>
+    function loginfn() {
+
+        var user = $("#user").val();
+        var pass = $("#pass").val();
+
+        if (user == "" || pass == "") {
+            document.getElementById("errlogin").innerHTML = "bạn cần nhập đầy đủ thông tin đăng nhập";
+            setTimeout(function () {
+                document.getElementById("errlogin").innerHTML = "";
+            }, 2000);
+            return false;
+        }
+        var settinglg = {
+            "async": true,
+            "CrossDomain": true,
+            "url": "https://localhost:44375/token",
+            "method": "POST",
+            "header": { 'content-type': 'application/x-www-form-url/encoded' },
+            "data": {
+                'username': user,
+                'password': pass,
+                'grant_type': 'password'
+            }
+
+        }
+        $.ajax(settinglg).done(function (respon) {
+            var tokenstring = 'bearer ' + respon.access_token;
+            $("#tblbody").empty();
+            $(".tbl").removeClass('hidden');
+            $.ajax({
+                url: "/Home/Login",
+                type: "POST",
+                dataType: "json",
+                data: { token: tokenstring },
+            }).done(function (data) {
+                var x = typeof data;
+                if (x == "string") {
+                    $(".tbl").addClass('hidden');
+                    document.getElementById("errshow").innerHTML = data;
+
+                }
+                else {
+                    $.each(data, function (key, item) {
+                        var row = '<td>' + item.DMBVID + '</td><td>' + item.TenDMBV + '</td><td>' + item.TAGDMBV + '</td>';
+                        $('<tr>', { html: row }).appendTo($("#tblbody"));
+
+                    });
+                }
+
+
+            }).fail(function (jqXHR, textStatus) {
+                $(".tbl").addClass('hidden');
+                document.getElementById("errshow").innerHTML = 'err :' + jqXHR.responseText || textStatus;
+                setTimeout(function () { document.getElementById("errshow").innerHTML = "" }, 30000);
+            });
+
+        }).fail(function (jqXHR, textStatus) {
+            $(".tbl").addClass('hidden');
+            document.getElementById("errshow").innerHTML = 'err :' + jqXHR.responseJSON.error_description || textStatus;
+            setTimeout(function () { document.getElementById("errshow").innerHTML = "" }, 30000);
+
+        });
+    }
+</script>
